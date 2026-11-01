@@ -171,6 +171,10 @@ Any Node host (Render, Railway, Fly.io, Azure App Service, a VM):
 
 Serve the SPA and API from the same origin (as this app does) so session cookies stay first-party. If you deploy the SPA separately, you must change the cookie `sameSite` policy and set `VITE_API_URL`, which weakens CSRF defences; this is not recommended.
 
+### Deploying on Vercel
+
+`vercel.json` defines two services in one project: `client` (Vite SPA, served at `/`) and `server` (Express, served at `/api/*`, entrypoint `server/src/index.ts`). Neither service calls the other server-side (the browser calls `/api` on the same origin), so no bindings are needed. Set `MONGODB_URI`, `SESSION_SECRET`, `CLIENT_ORIGIN` (the deployment URL) and `NODE_ENV=production` in the Vercel project, allow Vercel in Atlas Network Access (serverless IPs vary, so `0.0.0.0/0` is usually required), and run `npm run admin:init` once locally. Test with `vercel dev`. The in-memory rate limiter is per function instance.
+
 ## Security notes
 
 * bcrypt-hashed passwords; generic `401 Invalid email or password` for unknown account and wrong password, with a dummy-hash comparison to equalise timing; login is rate limited, and `/api` has a global limiter.
