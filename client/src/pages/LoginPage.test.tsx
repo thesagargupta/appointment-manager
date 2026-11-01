@@ -31,6 +31,16 @@ describe('LoginPage', () => {
     expect(loginSpy).not.toHaveBeenCalled();
   });
 
+  it('toggles password visibility with the eye button', async () => {
+    renderWithProviders(<LoginPage />);
+    const input = screen.getByLabelText('Password');
+    expect(input).toHaveAttribute('type', 'password');
+    await userEvent.click(screen.getByRole('button', { name: 'Show password' }));
+    expect(input).toHaveAttribute('type', 'text');
+    await userEvent.click(screen.getByRole('button', { name: 'Hide password' }));
+    expect(input).toHaveAttribute('type', 'password');
+  });
+
   it('rejects a malformed email', async () => {
     renderWithProviders(<LoginPage />);
     await fillAndSubmit('not-an-email', 'secret');

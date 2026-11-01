@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { CalendarDays, Loader2 } from 'lucide-react';
+import { CalendarDays, Eye, EyeOff, Loader2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { loginSchema, type LoginValues } from '../schemas';
 import { getErrorMessage } from '../services/api';
@@ -11,6 +11,7 @@ export default function LoginPage() {
   const { admin, login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const [showPassword, setShowPassword] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
   const {
     register,
@@ -56,7 +57,18 @@ export default function LoginPage() {
           </div>
           <div>
             <label htmlFor="password" className="label">Password</label>
-            <input id="password" type="password" autoComplete="current-password" className="input" aria-invalid={!!errors.password} aria-describedby={errors.password ? 'password-error' : undefined} {...register('password')} />
+            <div className="relative">
+              <input id="password" type={showPassword ? 'text' : 'password'} autoComplete="current-password" className="input pr-11" aria-invalid={!!errors.password} aria-describedby={errors.password ? 'password-error' : undefined} {...register('password')} />
+              <button
+                type="button"
+                onClick={() => setShowPassword((v) => !v)}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                aria-pressed={showPassword}
+                className="absolute inset-y-0 right-0 flex w-11 items-center justify-center rounded-r-lg text-slate-500 hover:text-slate-800"
+              >
+                {showPassword ? <EyeOff className="h-5 w-5" aria-hidden /> : <Eye className="h-5 w-5" aria-hidden />}
+              </button>
+            </div>
             {errors.password && <p id="password-error" role="alert" className="mt-1 text-xs text-red-600">{errors.password.message}</p>}
           </div>
           <button type="submit" className="btn-primary w-full" disabled={isSubmitting}>
