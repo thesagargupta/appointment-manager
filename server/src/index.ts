@@ -1,5 +1,5 @@
 import express from 'express';
-import { createApp } from './app';
+import { createApp } from './createApp';
 import { connectDb } from './config/db';
 import { env } from './config/env';
 import { Admin } from './models/Admin';

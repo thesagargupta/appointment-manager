@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import request from 'supertest';
-import { createApp } from '../src/app';
+import { createApp } from '../src/createApp';
 import { Admin } from '../src/models/Admin';
 import { Appointment } from '../src/models/Appointment';
 import { hashPassword } from '../src/services/authService';
